@@ -1,0 +1,42 @@
+{
+  "name": "hospedja-cp3-api",
+  "version": "0.3.0",
+  "private": true,
+  "description": "HospedJa - CodeSync - Checkpoint 3 - API REST",
+  "main": "src/server.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "check": "node scripts/check-project.js",
+    "integrity": "node scripts/check-integrity.js",
+    "test": "jest --runInBand",
+    "test:unit": "jest --runInBand tests/unit",
+    "test:http": "jest --runInBand tests/http",
+    "test:db": "jest --runInBand --config jest.db.config.cjs",
+    "test:coverage": "jest --runInBand --coverage",
+    "test:tdd:red": "node scripts/tdd-runner.js red",
+    "test:tdd:green": "node scripts/tdd-runner.js green",
+    "test:tdd:refactor": "node scripts/tdd-runner.js refactor"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.15.0",
+    "winston": "^3.17.0",
+    "zod": "^3.24.2",
+    "swagger-ui-express": "^5.0.1",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.1.1"
+  }
+}

@@ -1,0 +1,33 @@
+digraph D {
+graph [rankdir=TB,bgcolor=white,ranksep="0.9",nodesep="0.45",pad="0.25",splines=polyline];
+node [shape=box,style="rounded,filled",fillcolor="#F6F8FB",color="#48637C",fontcolor="#12253A",fontname="DejaVu Sans",fontsize=11,margin="0.15,0.15"];
+edge [color="#53728D",arrowsize=0.7];
+{rank=same; "ExpressRoutes";}
+"ExpressRoutes" [label="ExpressRoutes\n+ registraRotas()"];
+{rank=same; "AuthController"; "CatalogController"; "ReservationController";}
+"AuthController" [label="AuthController\n+ register()\n+ login()"];
+"CatalogController" [label="CatalogController\n+ list()\n+ create()"];
+"ReservationController" [label="ReservationController\n+ create()\n+ cancel()"];
+{rank=same; "AuthService"; "CatalogService"; "ReservationService";}
+"AuthService" [label="AuthService\n+ register()\n+ authenticate()"];
+"CatalogService" [label="CatalogService\n+ create()\n+ patch()"];
+"ReservationService" [label="ReservationService\n+ create()\n+ cancelPendingDraft()"];
+{rank=same; "UserRepository"; "SqlRepository"; "ReservationRepository";}
+"UserRepository" [label="UserRepository\n+ byEmail()\n+ create()"];
+"SqlRepository" [label="SqlRepository\n+ findById()\n+ update()"];
+"ReservationRepository" [label="ReservationRepository\n+ find()\n+ statusId()"];
+{rank=same; "MySQL8";}
+"MySQL8" [label="MySQL8\ntb_usuario\ntb_hotel\ntb_reserva"];
+"ExpressRoutes" -> "AuthController";
+"ExpressRoutes" -> "CatalogController";
+"ExpressRoutes" -> "ReservationController";
+"AuthController" -> "AuthService";
+"CatalogController" -> "CatalogService";
+"ReservationController" -> "ReservationService";
+"AuthService" -> "UserRepository";
+"CatalogService" -> "SqlRepository";
+"ReservationService" -> "ReservationRepository";
+"UserRepository" -> "MySQL8";
+"SqlRepository" -> "MySQL8";
+"ReservationRepository" -> "MySQL8";
+}

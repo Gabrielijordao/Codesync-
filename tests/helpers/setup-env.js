@@ -1,0 +1,10 @@
+process.env.NODE_ENV = 'test';
+process.env.DB_HOST ||= '127.0.0.1';
+process.env.DB_NAME ||= 'hospedja';
+process.env.DB_USER ||= 'hospedja_teste';
+process.env.DB_PASSWORD ||= 'senha_local_somente_testes';
+process.env.JWT_SECRET ||= 'SEGREDO_FAKE_SOMENTE_TESTES_com_mais_de_32_caracteres';
+process.env.BCRYPT_ROUNDS = '10';
+process.env.LOG_LEVEL ||= 'error';
+process.env.LOG_FILE = '';
+process.env.CORS_ORIGINS ||= 'http://localhost:5173';

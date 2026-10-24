@@ -1,0 +1,23 @@
+digraph D {
+graph [rankdir=TB,bgcolor=white,ranksep="0.9",nodesep="0.45",pad="0.25",splines=polyline];
+node [shape=box,style="rounded,filled",fillcolor="#F6F8FB",color="#48637C",fontcolor="#12253A",fontname="DejaVu Sans",fontsize=11,margin="0.15,0.15"];
+edge [color="#53728D",arrowsize=0.7];
+{rank=same; "ExpressApp";}
+"ExpressApp" [label="ExpressApp\n+ use(auditMiddleware)"];
+{rank=same; "AuditMiddleware";}
+"AuditMiddleware" [label="AuditMiddleware\n+ auditMiddleware()"];
+{rank=same; "AuditService";}
+"AuditService" [label="AuditService\n+ record()"];
+{rank=same; "WinstonLogger"; "MySQLPool";}
+"WinstonLogger" [label="WinstonLogger\n+ info()\n+ error()"];
+"MySQLPool" [label="MySQLPool\n+ execute()"];
+{rank=same; "LogArquivoOuStdout"; "TabelaLog";}
+"LogArquivoOuStdout" [label="LogArquivoOuStdout\neventos JSON"];
+"TabelaLog" [label="TabelaLog\ntb_log"];
+"ExpressApp" -> "AuditMiddleware";
+"AuditMiddleware" -> "AuditService";
+"AuditService" -> "WinstonLogger";
+"AuditService" -> "MySQLPool";
+"WinstonLogger" -> "LogArquivoOuStdout";
+"MySQLPool" -> "TabelaLog";
+}

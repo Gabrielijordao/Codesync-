@@ -1,0 +1,511 @@
+<mxfile host="app.diagrams.net">
+  <diagram id="hospedja" name="DER Hospedja">
+    <mxGraphModel dx="2228" dy="1201" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;fontSize=22;fontStyle=1;align=left;" value="HOSPEDJA - DER (v4) com logs, historico de status e tabelas de dominio" vertex="1">
+          <mxGeometry height="34" width="1000" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_rede_hoteis" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#7D4F9E;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_rede_hoteis" vertex="1">
+          <mxGeometry height="114" width="330" y="354" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_rede_hoteis_body" parent="tb_rede_hoteis" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK&lt;/b&gt; id_rede : INT&lt;br&gt;nome : VARCHAR(100)&lt;br&gt;descricao : TEXT&lt;br&gt;logo_url : VARCHAR(255)&lt;br&gt;status : VARCHAR(20)" vertex="1">
+          <mxGeometry height="88" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_hotel" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#7D4F9E;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_hotel" vertex="1">
+          <mxGeometry height="162" width="330" x="740" y="330" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_hotel_body" parent="tb_hotel" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK&lt;/b&gt; id_hotel : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_rede : INT NULL&lt;br&gt;nome : VARCHAR(100)&lt;br&gt;descricao : TEXT&lt;br&gt;categoria : VARCHAR(30)&lt;br&gt;classificacao : INT&lt;br&gt;telefone / email&lt;br&gt;status : VARCHAR(20)" vertex="1">
+          <mxGeometry height="136" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_endereco" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#7D4F9E;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_endereco" vertex="1">
+          <mxGeometry height="114" width="330" x="740" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_endereco_body" parent="tb_endereco" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK&lt;/b&gt; id_endereco : INT&lt;br&gt;&lt;b&gt;FK UNIQUE&lt;/b&gt; id_hotel : INT&lt;br&gt;rua / numero / complemento&lt;br&gt;bairro / cidade / estado / cep&lt;br&gt;latitude / longitude : DECIMAL" vertex="1">
+          <mxGeometry height="88" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_admin_hotel" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#E59E34;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_admin_hotel" vertex="1">
+          <mxGeometry height="130" width="330" x="1480" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_admin_hotel_body" parent="tb_admin_hotel" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK&lt;/b&gt; id_admin_hotel : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_usuario : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_hotel : INT&lt;br&gt;ativo : BOOLEAN (flag ativar/desativar)&lt;br&gt;data_ativacao : DATETIME&lt;br&gt;data_desativacao : DATETIME NULL" vertex="1">
+          <mxGeometry height="104" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_log_rede_hotel" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#5F6B76;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_log_rede_hotel" vertex="1">
+          <mxGeometry height="178" width="330" y="528" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_log_rede_hotel_body" parent="tb_log_rede_hotel" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK&lt;/b&gt; id_log_rede : BIGINT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_rede : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_usuario : INT NULL (quem alterou)&lt;br&gt;acao : ENUM(INSERT,UPDATE,DELETE)&lt;br&gt;campo_alterado : VARCHAR(50)&lt;br&gt;valor_anterior : TEXT&lt;br&gt;valor_novo : TEXT&lt;br&gt;ip : VARCHAR(45)&lt;br&gt;data_hora : DATETIME" vertex="1">
+          <mxGeometry height="152" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_log_hotel" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#5F6B76;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_log_hotel" vertex="1">
+          <mxGeometry height="178" width="330" x="740" y="552" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_log_hotel_body" parent="tb_log_hotel" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK&lt;/b&gt; id_log_hotel : BIGINT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_hotel : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_usuario : INT NULL (quem alterou)&lt;br&gt;acao : ENUM(INSERT,UPDATE,DELETE)&lt;br&gt;campo_alterado : VARCHAR(50)&lt;br&gt;valor_anterior : TEXT&lt;br&gt;valor_novo : TEXT&lt;br&gt;ip : VARCHAR(45)&lt;br&gt;data_hora : DATETIME" vertex="1">
+          <mxGeometry height="152" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_log_admin_hotel" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#5F6B76;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_log_admin_hotel" vertex="1">
+          <mxGeometry height="178" width="330" x="1480" y="810" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_log_admin_hotel_body" parent="tb_log_admin_hotel" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK&lt;/b&gt; id_log_admin_hotel : BIGINT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_admin_hotel : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_usuario : INT NULL (quem alterou)&lt;br&gt;acao : ENUM(INSERT,UPDATE,DELETE)&lt;br&gt;campo_alterado : VARCHAR(50)&lt;br&gt;valor_anterior : TEXT&lt;br&gt;valor_novo : TEXT&lt;br&gt;ip : VARCHAR(45)&lt;br&gt;data_hora : DATETIME" vertex="1">
+          <mxGeometry height="152" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_tipo_quarto" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#2A9D8F;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_tipo_quarto" vertex="1">
+          <mxGeometry height="162" width="330" x="1480" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_tipo_quarto_body" parent="tb_tipo_quarto" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK&lt;/b&gt; id_tipo_quarto : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_hotel : INT&lt;br&gt;nome / tipo : VARCHAR&lt;br&gt;descricao : TEXT&lt;br&gt;capacidade : INT&lt;br&gt;valor_diaria : DECIMAL(10,2)&lt;br&gt;quantidade_disponivel : INT&lt;br&gt;status : VARCHAR(20)" vertex="1">
+          <mxGeometry height="136" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_foto_tipo_quarto" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#2A9D8F;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_foto_tipo_quarto" vertex="1">
+          <mxGeometry height="146" width="330" x="2220" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_foto_tipo_quarto_body" parent="tb_foto_tipo_quarto" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK&lt;/b&gt; id_foto : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_tipo_quarto : INT&lt;br&gt;url : VARCHAR(255)&lt;br&gt;legenda : VARCHAR(100)&lt;br&gt;principal : BOOLEAN&lt;br&gt;ordem : INT&lt;br&gt;data_upload : DATETIME" vertex="1">
+          <mxGeometry height="120" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_log_tipo_quarto" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#5F6B76;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_log_tipo_quarto" vertex="1">
+          <mxGeometry height="178" width="330" x="1480" y="362" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_log_tipo_quarto_body" parent="tb_log_tipo_quarto" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK&lt;/b&gt; id_log_tipo_quarto : BIGINT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_tipo_quarto : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_usuario : INT NULL (quem alterou)&lt;br&gt;acao : ENUM(INSERT,UPDATE,DELETE)&lt;br&gt;campo_alterado : VARCHAR(50)&lt;br&gt;valor_anterior : TEXT&lt;br&gt;valor_novo : TEXT&lt;br&gt;ip : VARCHAR(45)&lt;br&gt;data_hora : DATETIME" vertex="1">
+          <mxGeometry height="152" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_guia" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#4A8F6A;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_guia" vertex="1">
+          <mxGeometry height="146" width="330" x="1480" y="1222" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_guia_body" parent="tb_guia" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK&lt;/b&gt; id_guia : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_hotel : INT NULL&lt;br&gt;nome / cpf / email / telefone&lt;br&gt;tipo_guia : ENUM(INTERNO,EXTERNO)&lt;br&gt;descricao / especialidade&lt;br&gt;valor_diaria : DECIMAL(10,2)&lt;br&gt;status : VARCHAR(20)" vertex="1">
+          <mxGeometry height="120" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_reserva_guia" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#4A8F6A;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_reserva_guia" vertex="1">
+          <mxGeometry height="146" width="330" x="2220" y="1674" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_reserva_guia_body" parent="tb_reserva_guia" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK&lt;/b&gt; id_reserva_guia : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_reserva : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_guia : INT&lt;br&gt;data_servico : DATE&lt;br&gt;horario_inicio / horario_fim&lt;br&gt;valor : DECIMAL(10,2)&lt;br&gt;status : VARCHAR(20)" vertex="1">
+          <mxGeometry height="120" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_avaliacao_guia" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#4A8F6A;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_avaliacao_guia" vertex="1">
+          <mxGeometry height="114" width="330" x="2870" y="1780" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_avaliacao_guia_body" parent="tb_avaliacao_guia" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK&lt;/b&gt; id_avaliacao : INT&lt;br&gt;&lt;b&gt;FK UNIQUE&lt;/b&gt; id_reserva_guia : INT&lt;br&gt;nota : INT (1..5)&lt;br&gt;comentario : TEXT&lt;br&gt;data_avaliacao : DATETIME" vertex="1">
+          <mxGeometry height="88" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_usuario" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#1F4E79;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_usuario" vertex="1">
+          <mxGeometry height="194" width="330" x="2220" y="940" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_usuario_body" parent="tb_usuario" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK&lt;/b&gt; id_usuario : INT&lt;br&gt;nome : VARCHAR(100)&lt;br&gt;email : VARCHAR(100) UNIQUE (minusculo)&lt;br&gt;senha_hash : VARCHAR(255)&lt;br&gt;cpf : CHAR(11) UNIQUE (so digitos)&lt;br&gt;telefone : VARCHAR(15) (so digitos c/ DDD)&lt;br&gt;data_nascimento : DATE&lt;br&gt;tipo_usuario : ENUM&lt;br&gt;status : VARCHAR(20)&lt;br&gt;data_cadastro : DATETIME" vertex="1">
+          <mxGeometry height="168" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_endereco_usuario" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#1F4E79;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_endereco_usuario" vertex="1">
+          <mxGeometry height="226" width="330" x="1480" y="1438" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_endereco_usuario_body" parent="tb_endereco_usuario" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK&lt;/b&gt; id_endereco_usuario : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_usuario : INT&lt;br&gt;cep : CHAR(8) (so digitos)&lt;br&gt;logradouro : VARCHAR(150)&lt;br&gt;numero : VARCHAR(10)&lt;br&gt;complemento : VARCHAR(60)&lt;br&gt;bairro : VARCHAR(80)&lt;br&gt;cidade : VARCHAR(80)&lt;br&gt;uf : CHAR(2)&lt;br&gt;pais : CHAR(2) DEFAULT &amp;#x27;BR&amp;#x27;&lt;br&gt;principal : BOOLEAN&lt;br&gt;data_cadastro : DATETIME" vertex="1">
+          <mxGeometry height="200" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_favorito" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#E59E34;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_favorito" vertex="1">
+          <mxGeometry height="82" width="330" x="1480" y="1070" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_favorito_body" parent="tb_favorito" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK/FK&lt;/b&gt; id_usuario : INT&lt;br&gt;&lt;b&gt;PK/FK&lt;/b&gt; id_hotel : INT&lt;br&gt;data_adicao : DATETIME" vertex="1">
+          <mxGeometry height="56" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_atendimento" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#5F6B76;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_atendimento" vertex="1">
+          <mxGeometry height="114" width="330" x="1480" y="1734" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_atendimento_body" parent="tb_atendimento" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK&lt;/b&gt; id_atendimento : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_usuario : INT&lt;br&gt;tipo : ENUM(CHATBOT,SAC)&lt;br&gt;status : VARCHAR(20)&lt;br&gt;data_inicio / data_fim" vertex="1">
+          <mxGeometry height="88" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_mensagem" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#5F6B76;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_mensagem" vertex="1">
+          <mxGeometry height="146" width="330" x="740" y="1720" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_mensagem_body" parent="tb_mensagem" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK&lt;/b&gt; id_mensagem : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_atendimento : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_status_mensagem : TINYINT&lt;br&gt;remetente : VARCHAR(20)&lt;br&gt;conteudo : TEXT&lt;br&gt;origem : ENUM&lt;br&gt;data_hora : DATETIME" vertex="1">
+          <mxGeometry height="120" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_status_mensagem" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#5F6B76;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_status_mensagem" vertex="1">
+          <mxGeometry height="98" width="330" y="1740" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_status_mensagem_body" parent="tb_status_mensagem" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK&lt;/b&gt; id_status_mensagem : TINYINT&lt;br&gt;codigo : VARCHAR(30) UNIQUE&lt;br&gt;descricao : VARCHAR(100)&lt;br&gt;ativo : BOOLEAN" vertex="1">
+          <mxGeometry height="72" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_log_mensagem" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#5F6B76;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_log_mensagem" vertex="1">
+          <mxGeometry height="178" width="330" x="740" y="1926" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_log_mensagem_body" parent="tb_log_mensagem" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK&lt;/b&gt; id_log_mensagem : BIGINT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_mensagem : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_usuario : INT NULL (quem alterou)&lt;br&gt;acao : ENUM(INSERT,UPDATE,DELETE)&lt;br&gt;campo_alterado : VARCHAR(50)&lt;br&gt;valor_anterior : TEXT&lt;br&gt;valor_novo : TEXT&lt;br&gt;ip : VARCHAR(45)&lt;br&gt;data_hora : DATETIME" vertex="1">
+          <mxGeometry height="152" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_log" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#5F6B76;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_log (auditoria geral)" vertex="1">
+          <mxGeometry height="146" width="330" x="1480" y="1918" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_log_body" parent="tb_log" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK&lt;/b&gt; id_log : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_usuario : INT NULL&lt;br&gt;acao / operacao / entidade&lt;br&gt;id_registro : INT&lt;br&gt;detalhes : TEXT&lt;br&gt;ip : VARCHAR(45)&lt;br&gt;data_hora : DATETIME" vertex="1">
+          <mxGeometry height="120" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_reserva" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#C0392B;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_reserva" vertex="1">
+          <mxGeometry height="178" width="330" x="2960" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_reserva_body" parent="tb_reserva" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK&lt;/b&gt; id_reserva : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_usuario : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_status_reserva : TINYINT (status atual)&lt;br&gt;codigo_confirmacao : VARCHAR(30) UNIQUE&lt;br&gt;data_reserva : DATETIME&lt;br&gt;checkin / checkout : DATE&lt;br&gt;quantidade_hospedes : INT&lt;br&gt;valor_total / taxas : DECIMAL&lt;br&gt;observacoes : TEXT" vertex="1">
+          <mxGeometry height="152" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_item_reserva" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#C0392B;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_item_reserva" vertex="1">
+          <mxGeometry height="130" width="330" x="2220" y="364" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_item_reserva_body" parent="tb_item_reserva" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK&lt;/b&gt; id_item_reserva : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_reserva : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_tipo_quarto : INT&lt;br&gt;quantidade : INT&lt;br&gt;valor_diaria : DECIMAL(10,2)&lt;br&gt;valor_total : DECIMAL(10,2)" vertex="1">
+          <mxGeometry height="104" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_status_reserva" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#C0392B;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_status_reserva" vertex="1">
+          <mxGeometry height="98" width="330" x="3700" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_status_reserva_body" parent="tb_status_reserva" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK&lt;/b&gt; id_status_reserva : TINYINT&lt;br&gt;codigo : VARCHAR(30) UNIQUE&lt;br&gt;descricao : VARCHAR(100)&lt;br&gt;ativo : BOOLEAN" vertex="1">
+          <mxGeometry height="72" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_reserva_status" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#C0392B;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_reserva_status (historico)" vertex="1">
+          <mxGeometry height="130" width="330" x="3700" y="408" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_reserva_status_body" parent="tb_reserva_status" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK&lt;/b&gt; id_reserva_status : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_reserva : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_status_reserva : TINYINT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_usuario : INT NULL (quem mudou)&lt;br&gt;observacao : VARCHAR(255)&lt;br&gt;data_hora : DATETIME" vertex="1">
+          <mxGeometry height="104" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_log_reserva" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#5F6B76;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_log_reserva" vertex="1">
+          <mxGeometry height="178" width="330" x="2960" y="578" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_log_reserva_body" parent="tb_log_reserva" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK&lt;/b&gt; id_log_reserva : BIGINT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_reserva : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_usuario : INT NULL (quem alterou)&lt;br&gt;acao : ENUM(INSERT,UPDATE,DELETE)&lt;br&gt;campo_alterado : VARCHAR(50)&lt;br&gt;valor_anterior : TEXT&lt;br&gt;valor_novo : TEXT&lt;br&gt;ip : VARCHAR(45)&lt;br&gt;data_hora : DATETIME" vertex="1">
+          <mxGeometry height="152" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_avaliacao_hospedagem" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#E59E34;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_avaliacao_hospedagem" vertex="1">
+          <mxGeometry height="130" width="330" x="2960" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_avaliacao_hospedagem_body" parent="tb_avaliacao_hospedagem" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK&lt;/b&gt; id_avaliacao : INT&lt;br&gt;&lt;b&gt;FK UNIQUE&lt;/b&gt; id_reserva : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_usuario : INT&lt;br&gt;nota : INT (1..5)&lt;br&gt;comentario : TEXT&lt;br&gt;data_avaliacao : DATETIME" vertex="1">
+          <mxGeometry height="104" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_pagamento" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#2F6DB0;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_pagamento" vertex="1">
+          <mxGeometry height="130" width="330" x="3700" y="848" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_pagamento_body" parent="tb_pagamento" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK&lt;/b&gt; id_pagamento : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_reserva : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_status_pagamento : TINYINT (status atual)&lt;br&gt;valor : DECIMAL(10,2)&lt;br&gt;metodo : VARCHAR(50)&lt;br&gt;data_pagamento : DATETIME" vertex="1">
+          <mxGeometry height="104" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_status_pagamento" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#2F6DB0;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_status_pagamento" vertex="1">
+          <mxGeometry height="98" width="330" x="4440" y="940" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_status_pagamento_body" parent="tb_status_pagamento" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK&lt;/b&gt; id_status_pagamento : TINYINT&lt;br&gt;codigo : VARCHAR(30) UNIQUE&lt;br&gt;descricao : VARCHAR(100)&lt;br&gt;ativo : BOOLEAN" vertex="1">
+          <mxGeometry height="72" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_pagamento_status" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#2F6DB0;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_pagamento_status (historico)" vertex="1">
+          <mxGeometry height="130" width="330" x="3700" y="1038" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_pagamento_status_body" parent="tb_pagamento_status" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK&lt;/b&gt; id_pagamento_status : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_pagamento : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_status_pagamento : TINYINT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_usuario : INT NULL (quem mudou)&lt;br&gt;observacao : VARCHAR(255)&lt;br&gt;data_hora : DATETIME" vertex="1">
+          <mxGeometry height="104" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_log_pagamento" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#5F6B76;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_log_pagamento" vertex="1">
+          <mxGeometry height="178" width="330" x="3700" y="610" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_log_pagamento_body" parent="tb_log_pagamento" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK&lt;/b&gt; id_log_pagamento : BIGINT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_pagamento : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_usuario : INT NULL (quem alterou)&lt;br&gt;acao : ENUM(INSERT,UPDATE,DELETE)&lt;br&gt;campo_alterado : VARCHAR(50)&lt;br&gt;valor_anterior : TEXT&lt;br&gt;valor_novo : TEXT&lt;br&gt;ip : VARCHAR(45)&lt;br&gt;data_hora : DATETIME" vertex="1">
+          <mxGeometry height="152" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_ocorrencia" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#7D4F9E;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_ocorrencia" vertex="1">
+          <mxGeometry height="130" width="330" x="2960" y="1140" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_ocorrencia_body" parent="tb_ocorrencia" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK&lt;/b&gt; id_ocorrencia : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_reserva_guia : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_usuario : INT&lt;br&gt;descricao / analise : TEXT&lt;br&gt;data_ocorrencia : DATETIME&lt;br&gt;status : VARCHAR(20)" vertex="1">
+          <mxGeometry height="104" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_penalidade" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#7D4F9E;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_penalidade" vertex="1">
+          <mxGeometry height="162" width="330" x="2220" y="1204" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_penalidade_body" parent="tb_penalidade" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK&lt;/b&gt; id_penalidade : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_ocorrencia : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_guia : INT NULL&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_usuario_penalizador : INT (quem penalizou)&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_usuario_penalizado : INT (quem foi penalizado)&lt;br&gt;tipo / descricao&lt;br&gt;data_aplicacao : DATETIME&lt;br&gt;status : VARCHAR(20)" vertex="1">
+          <mxGeometry height="136" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_log_penalidade" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#5F6B76;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_log_penalidade" vertex="1">
+          <mxGeometry height="178" width="330" x="2220" y="1426" as="geometry" />
+        </mxCell>
+        <mxCell id="tb_log_penalidade_body" parent="tb_log_penalidade" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK&lt;/b&gt; id_log_penalidade : BIGINT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_penalidade : INT&lt;br&gt;&lt;b&gt;FK&lt;/b&gt; id_usuario : INT NULL (quem alterou)&lt;br&gt;acao : ENUM(INSERT,UPDATE,DELETE)&lt;br&gt;campo_alterado : VARCHAR(50)&lt;br&gt;valor_anterior : TEXT&lt;br&gt;valor_novo : TEXT&lt;br&gt;ip : VARCHAR(45)&lt;br&gt;data_hora : DATETIME" vertex="1">
+          <mxGeometry height="152" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="rel0" edge="1" parent="1" source="tb_rede_hoteis" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=1.000;exitY=0.500;entryX=0.000;entryY=0.500;exitPerimeter=0;entryPerimeter=0;" target="tb_hotel" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel1" edge="1" parent="1" source="tb_hotel" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.500;exitY=0.000;entryX=0.500;entryY=1.000;exitPerimeter=0;entryPerimeter=0;" target="tb_endereco" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel2" edge="1" parent="1" source="tb_hotel" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=1.000;exitY=0.383;entryX=0.000;entryY=0.500;exitPerimeter=0;entryPerimeter=0;" target="tb_admin_hotel" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1420" y="392" />
+              <mxPoint x="1420" y="685" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel3" edge="1" parent="1" source="tb_usuario" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.000;exitY=0.150;entryX=1.000;entryY=0.500;exitPerimeter=0;entryPerimeter=0;" target="tb_admin_hotel" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2088" y="969" />
+              <mxPoint x="2088" y="685" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel4" edge="1" parent="1" source="tb_hotel" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=1.000;exitY=0.150;entryX=0.000;entryY=0.500;exitPerimeter=0;entryPerimeter=0;" target="tb_tipo_quarto" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1275" y="354" />
+              <mxPoint x="1275" y="221" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel5" edge="1" parent="1" source="tb_tipo_quarto" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=1.000;exitY=0.150;entryX=0.000;entryY=0.500;exitPerimeter=0;entryPerimeter=0;" target="tb_foto_tipo_quarto" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2015" y="164" />
+              <mxPoint x="2015" y="213" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel6" edge="1" parent="1" source="tb_tipo_quarto" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=1.000;exitY=0.850;entryX=0.000;entryY=0.500;exitPerimeter=0;entryPerimeter=0;" target="tb_item_reserva" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2051" y="278" />
+              <mxPoint x="2051" y="429" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel7" edge="1" parent="1" source="tb_reserva" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.000;exitY=0.500;entryX=1.000;entryY=0.500;exitPerimeter=0;entryPerimeter=0;" target="tb_item_reserva" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel8" edge="1" parent="1" source="tb_usuario" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=1.000;exitY=0.500;entryX=0.000;entryY=0.700;exitPerimeter=0;entryPerimeter=0;" target="tb_reserva" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2707" y="1037" />
+              <mxPoint x="2707" y="465" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel9" edge="1" parent="1" source="tb_usuario" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.000;exitY=0.500;entryX=1.000;entryY=0.500;exitPerimeter=0;entryPerimeter=0;" target="tb_endereco_usuario" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1906" y="1037" />
+              <mxPoint x="1906" y="1551" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel10" edge="1" parent="1" source="tb_usuario" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.000;exitY=0.675;entryX=1.000;entryY=0.500;exitPerimeter=0;entryPerimeter=0;" target="tb_atendimento" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2124" y="1071" />
+              <mxPoint x="2124" y="1791" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel11" edge="1" parent="1" source="tb_atendimento" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.000;exitY=0.500;entryX=1.000;entryY=0.500;exitPerimeter=0;entryPerimeter=0;" target="tb_mensagem" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1348" y="1791" />
+              <mxPoint x="1348" y="1793" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel12" edge="1" parent="1" source="tb_status_mensagem" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=1.000;exitY=0.500;entryX=0.000;entryY=0.500;exitPerimeter=0;entryPerimeter=0;" target="tb_mensagem" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="535" y="1789" />
+              <mxPoint x="535" y="1793" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel13" edge="1" parent="1" source="tb_usuario" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.000;exitY=0.850;entryX=1.000;entryY=0.500;exitPerimeter=0;entryPerimeter=0;" target="tb_log" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2160" y="1105" />
+              <mxPoint x="2160" y="1991" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel14" edge="1" parent="1" source="tb_usuario" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.000;exitY=0.325;entryX=1.000;entryY=0.500;exitPerimeter=0;entryPerimeter=0;" target="tb_favorito" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1870" y="1003" />
+              <mxPoint x="1870" y="1111" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel15" edge="1" parent="1" source="tb_hotel" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=1.000;exitY=0.617;entryX=0.000;entryY=0.500;exitPerimeter=0;entryPerimeter=0;" target="tb_favorito" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1202" y="430" />
+              <mxPoint x="1202" y="1111" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel16" edge="1" parent="1" source="tb_status_reserva" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.000;exitY=0.500;entryX=1.000;entryY=0.150;exitPerimeter=0;entryPerimeter=0;" target="tb_reserva" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="3350" y="289" />
+              <mxPoint x="3350" y="367" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel17" edge="1" parent="1" source="tb_reserva" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=1.000;exitY=0.500;entryX=0.000;entryY=0.500;exitPerimeter=0;entryPerimeter=0;" target="tb_reserva_status" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="3495" y="429" />
+              <mxPoint x="3495" y="473" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel18" edge="1" parent="1" source="tb_status_reserva" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.500;exitY=1.000;entryX=0.500;entryY=0.000;exitPerimeter=0;entryPerimeter=0;" target="tb_reserva_status" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel19" edge="1" parent="1" source="tb_reserva" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=1.000;exitY=0.850;entryX=0.000;entryY=0.500;exitPerimeter=0;entryPerimeter=0;" target="tb_pagamento" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="3640" y="491" />
+              <mxPoint x="3640" y="913" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel20" edge="1" parent="1" source="tb_status_pagamento" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.000;exitY=0.150;entryX=1.000;entryY=0.500;exitPerimeter=0;entryPerimeter=0;" target="tb_pagamento" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="4090" y="955" />
+              <mxPoint x="4090" y="913" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel21" edge="1" parent="1" source="tb_pagamento" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.500;exitY=1.000;entryX=0.500;entryY=0.000;exitPerimeter=0;entryPerimeter=0;" target="tb_pagamento_status" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel22" edge="1" parent="1" source="tb_status_pagamento" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.000;exitY=0.850;entryX=1.000;entryY=0.500;exitPerimeter=0;entryPerimeter=0;" target="tb_pagamento_status" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="4380" y="1023" />
+              <mxPoint x="4380" y="1103" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel23" edge="1" parent="1" source="tb_reserva" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.500;exitY=0.000;entryX=0.500;entryY=1.000;exitPerimeter=0;entryPerimeter=0;" target="tb_avaliacao_hospedagem" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel24" edge="1" parent="1" source="tb_usuario" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=1.000;exitY=0.150;entryX=0.000;entryY=0.500;exitPerimeter=0;entryPerimeter=0;" target="tb_avaliacao_hospedagem" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2658" y="969" />
+              <mxPoint x="2658" y="205" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel25" edge="1" parent="1" source="tb_hotel" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=1.000;exitY=0.850;entryX=0.000;entryY=0.500;exitPerimeter=0;entryPerimeter=0;" target="tb_guia" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1130" y="468" />
+              <mxPoint x="1130" y="1295" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel26" edge="1" parent="1" source="tb_guia" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=1.000;exitY=0.850;entryX=0.000;entryY=0.500;exitPerimeter=0;entryPerimeter=0;" target="tb_reserva_guia" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1942" y="1346" />
+              <mxPoint x="1942" y="1747" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel27" edge="1" parent="1" source="tb_reserva" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.000;exitY=0.920;entryX=1.000;entryY=0.150;exitPerimeter=0;entryPerimeter=0;" target="tb_reserva_guia" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2803" y="504" />
+              <mxPoint x="2803" y="1696" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel29" edge="1" parent="1" source="tb_reserva_guia" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=1.000;exitY=0.500;entryX=0.000;entryY=0.850;exitPerimeter=0;entryPerimeter=0;" target="tb_ocorrencia" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2852" y="1747" />
+              <mxPoint x="2852" y="1250" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel30" edge="1" parent="1" source="tb_usuario" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=1.000;exitY=0.850;entryX=0.000;entryY=0.150;exitPerimeter=0;entryPerimeter=0;" target="tb_ocorrencia" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2755" y="1105" />
+              <mxPoint x="2755" y="1160" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel31" edge="1" parent="1" source="tb_ocorrencia" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.000;exitY=0.500;entryX=1.000;entryY=0.500;exitPerimeter=0;entryPerimeter=0;" target="tb_penalidade" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2610" y="1205" />
+              <mxPoint x="2610" y="1285" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel32" edge="1" parent="1" source="tb_guia" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=1.000;exitY=0.150;entryX=0.000;entryY=0.500;exitPerimeter=0;entryPerimeter=0;" target="tb_penalidade" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1979" y="1244" />
+              <mxPoint x="1979" y="1285" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="rel33" edge="1" parent="1" source="tb_rede_hoteis" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.500;exitY=1.000;entryX=0.500;entryY=0.000;exitPerimeter=0;entryPerimeter=0;dashed=1;strokeColor=#999999;" target="tb_log_rede_hotel" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel34" edge="1" parent="1" source="tb_hotel" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.500;exitY=1.000;entryX=0.500;entryY=0.000;exitPerimeter=0;entryPerimeter=0;dashed=1;strokeColor=#999999;" target="tb_log_hotel" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel35" edge="1" parent="1" source="tb_admin_hotel" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.500;exitY=1.000;entryX=0.500;entryY=0.000;exitPerimeter=0;entryPerimeter=0;dashed=1;strokeColor=#999999;" target="tb_log_admin_hotel" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel36" edge="1" parent="1" source="tb_tipo_quarto" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.500;exitY=1.000;entryX=0.500;entryY=0.000;exitPerimeter=0;entryPerimeter=0;dashed=1;strokeColor=#999999;" target="tb_log_tipo_quarto" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel37" edge="1" parent="1" source="tb_mensagem" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.500;exitY=1.000;entryX=0.500;entryY=0.000;exitPerimeter=0;entryPerimeter=0;dashed=1;strokeColor=#999999;" target="tb_log_mensagem" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel38" edge="1" parent="1" source="tb_reserva" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.500;exitY=1.000;entryX=0.500;entryY=0.000;exitPerimeter=0;entryPerimeter=0;dashed=1;strokeColor=#999999;" target="tb_log_reserva" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel39" edge="1" parent="1" source="tb_pagamento" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.500;exitY=0.000;entryX=0.500;entryY=1.000;exitPerimeter=0;entryPerimeter=0;dashed=1;strokeColor=#999999;" target="tb_log_pagamento" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel40" edge="1" parent="1" source="tb_penalidade" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.500;exitY=1.000;entryX=0.500;entryY=0.000;exitPerimeter=0;entryPerimeter=0;dashed=1;strokeColor=#999999;" target="tb_log_penalidade" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel41" edge="1" parent="1" source="tb_usuario" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.280;exitY=1.000;entryX=0.280;entryY=0.000;exitPerimeter=0;entryPerimeter=0;" target="tb_penalidade" value="penalizador">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel42" edge="1" parent="1" source="tb_usuario" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.720;exitY=1.000;entryX=0.720;entryY=0.000;exitPerimeter=0;entryPerimeter=0;" target="tb_penalidade" value="penalizado">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="HgUJduvHkl3-4kOgfwnS-3" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#4A8F6A;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_GUIA _INTERNO" vertex="1">
+          <mxGeometry height="146" width="330" x="2220" y="1926" as="geometry" />
+        </mxCell>
+        <mxCell id="HgUJduvHkl3-4kOgfwnS-4" parent="HgUJduvHkl3-4kOgfwnS-3" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK, FK id_guia:INT&lt;/b&gt;&lt;div&gt;&lt;b&gt;FK id_hotel: INT&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="120" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="HgUJduvHkl3-4kOgfwnS-6" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=26;fillColor=#4A8F6A;fontColor=#FFFFFF;strokeColor=#444444;swimlaneFillColor=#FFFFFF;" value="tb_Guia_externo" vertex="1">
+          <mxGeometry height="146" width="330" x="2610" y="1926" as="geometry" />
+        </mxCell>
+        <mxCell id="HgUJduvHkl3-4kOgfwnS-7" parent="HgUJduvHkl3-4kOgfwnS-6" style="text;html=1;align=left;verticalAlign=top;spacingLeft=6;spacingTop=2;whiteSpace=nowrap;overflow=hidden;fontSize=11;" value="&lt;b&gt;PK, FK id_guia: Int&lt;/b&gt;&lt;div&gt;&lt;b&gt;Registro_Profissional: VARCHAR(50)&lt;/b&gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;dados_contato: TEXT&lt;/b&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="120" width="330" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="HgUJduvHkl3-4kOgfwnS-8" edge="1" parent="1" source="HgUJduvHkl3-4kOgfwnS-3" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0.25;exitY=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;exitDx=0;exitDy=0;" target="tb_reserva_guia_body" value="">
+          <mxGeometry relative="1" x="0.0629" as="geometry">
+            <Array as="points" />
+            <mxPoint x="2040" y="2357" as="sourcePoint" />
+            <mxPoint x="2450" y="1861" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="HgUJduvHkl3-4kOgfwnS-10" edge="1" parent="1" source="HgUJduvHkl3-4kOgfwnS-6" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;entryX=0.25;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" value="">
+          <mxGeometry relative="1" x="0.5875" as="geometry">
+            <Array as="points">
+              <mxPoint x="2775" y="1880" />
+              <mxPoint x="2520" y="1880" />
+            </Array>
+            <mxPoint x="2780" y="1880" as="sourcePoint" />
+            <mxPoint x="2520" y="1820" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="HgUJduvHkl3-4kOgfwnS-11" edge="1" parent="1" source="tb_avaliacao_guia" style="html=1;startArrow=ERone;endArrow=ERmany;startFill=0;endFill=0;strokeColor=#555555;strokeWidth=1.5;rounded=0;fontSize=10;labelBackgroundColor=#FFFFFF;exitX=0;exitY=0.5;entryX=1;entryY=0.75;entryDx=0;entryDy=0;exitDx=0;exitDy=0;" target="tb_reserva_guia" value="">
+          <mxGeometry relative="1" x="0.0629" as="geometry">
+            <Array as="points">
+              <mxPoint x="2600" y="1837" />
+            </Array>
+            <mxPoint x="2690" y="1886" as="sourcePoint" />
+            <mxPoint x="2690" y="1780" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" modified="2026-10-24T00:00:00.000Z" agent="HospedJa CodeSync" version="24.7.17" type="device">
+  <diagram name="Ocorrências e análise administrativa" id="05_ocorrencias_analise">
+    <mxGraphModel dx="1260" dy="980" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="1350" math="0" shadow="0" background="#FFFFFF">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="OccurrenceRoutes" value="OccurrenceRoutes&#10;GET /&#10;POST /&#10;PATCH /:id/analise" style="rounded=1;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;fillColor=#F6F8FB;strokeColor=#48637C;fontColor=#12253A;fontSize=14;fontFamily=Arial;spacing=12;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="480" y="55" width="240" height="123" as="geometry" />
+        </mxCell>
+        <mxCell id="OccurrenceController" value="OccurrenceController&#10;+ create()&#10;+ review()" style="rounded=1;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;fillColor=#F6F8FB;strokeColor=#48637C;fontColor=#12253A;fontSize=14;fontFamily=Arial;spacing=12;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="480" y="295" width="240" height="123" as="geometry" />
+        </mxCell>
+        <mxCell id="OccurrenceService" value="OccurrenceService&#10;+ create()&#10;+ review()" style="rounded=1;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;fillColor=#F6F8FB;strokeColor=#48637C;fontColor=#12253A;fontSize=14;fontFamily=Arial;spacing=12;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="480" y="535" width="240" height="123" as="geometry" />
+        </mxCell>
+        <mxCell id="SqlRepository" value="SqlRepository&#10;+ findById()&#10;+ create()" style="rounded=1;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;fillColor=#F6F8FB;strokeColor=#48637C;fontColor=#12253A;fontSize=14;fontFamily=Arial;spacing=12;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="340" y="775" width="240" height="123" as="geometry" />
+        </mxCell>
+        <mxCell id="MySQLPool" value="MySQLPool&#10;+ execute()" style="rounded=1;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;fillColor=#F6F8FB;strokeColor=#48637C;fontColor=#12253A;fontSize=14;fontFamily=Arial;spacing=12;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="620" y="775" width="240" height="123" as="geometry" />
+        </mxCell>
+        <mxCell id="MySQL8" value="MySQL8&#10;tb_ocorrencia&#10;tb_penalidade" style="rounded=1;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;fillColor=#F6F8FB;strokeColor=#48637C;fontColor=#12253A;fontSize=14;fontFamily=Arial;spacing=12;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="480" y="1015" width="240" height="123" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=0;endArrow=open;endFill=0;strokeColor=#53728D;strokeWidth=1.5;" edge="1" parent="1" source="OccurrenceRoutes" target="OccurrenceController">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=0;endArrow=open;endFill=0;strokeColor=#53728D;strokeWidth=1.5;" edge="1" parent="1" source="OccurrenceController" target="OccurrenceService">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=0;endArrow=open;endFill=0;strokeColor=#53728D;strokeWidth=1.5;" edge="1" parent="1" source="OccurrenceService" target="SqlRepository">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=0;endArrow=open;endFill=0;strokeColor=#53728D;strokeWidth=1.5;" edge="1" parent="1" source="OccurrenceService" target="MySQLPool">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=0;endArrow=open;endFill=0;strokeColor=#53728D;strokeWidth=1.5;" edge="1" parent="1" source="SqlRepository" target="MySQL8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_6" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=0;endArrow=open;endFill=0;strokeColor=#53728D;strokeWidth=1.5;" edge="1" parent="1" source="MySQLPool" target="MySQL8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

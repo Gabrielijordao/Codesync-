@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" modified="2026-10-24T00:00:00.000Z" agent="HospedJa CodeSync" version="24.7.17" type="device">
+  <diagram name="Auditoria e rastreabilidade" id="03_auditoria_logs">
+    <mxGraphModel dx="1260" dy="980" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="1350" math="0" shadow="0" background="#FFFFFF">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="ExpressApp" value="ExpressApp&#10;+ use(auditMiddleware)" style="rounded=1;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;fillColor=#F6F8FB;strokeColor=#48637C;fontColor=#12253A;fontSize=14;fontFamily=Arial;spacing=12;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="480" y="55" width="240" height="123" as="geometry" />
+        </mxCell>
+        <mxCell id="AuditMiddleware" value="AuditMiddleware&#10;+ auditMiddleware()" style="rounded=1;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;fillColor=#F6F8FB;strokeColor=#48637C;fontColor=#12253A;fontSize=14;fontFamily=Arial;spacing=12;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="480" y="295" width="240" height="123" as="geometry" />
+        </mxCell>
+        <mxCell id="AuditService" value="AuditService&#10;+ record()" style="rounded=1;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;fillColor=#F6F8FB;strokeColor=#48637C;fontColor=#12253A;fontSize=14;fontFamily=Arial;spacing=12;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="480" y="535" width="240" height="123" as="geometry" />
+        </mxCell>
+        <mxCell id="WinstonLogger" value="WinstonLogger&#10;+ info()&#10;+ error()" style="rounded=1;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;fillColor=#F6F8FB;strokeColor=#48637C;fontColor=#12253A;fontSize=14;fontFamily=Arial;spacing=12;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="340" y="775" width="240" height="123" as="geometry" />
+        </mxCell>
+        <mxCell id="MySQLPool" value="MySQLPool&#10;+ execute()" style="rounded=1;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;fillColor=#F6F8FB;strokeColor=#48637C;fontColor=#12253A;fontSize=14;fontFamily=Arial;spacing=12;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="620" y="775" width="240" height="123" as="geometry" />
+        </mxCell>
+        <mxCell id="LogArquivoOuStdout" value="LogArquivoOuStdout&#10;eventos JSON" style="rounded=1;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;fillColor=#F6F8FB;strokeColor=#48637C;fontColor=#12253A;fontSize=14;fontFamily=Arial;spacing=12;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="340" y="1015" width="240" height="123" as="geometry" />
+        </mxCell>
+        <mxCell id="TabelaLog" value="TabelaLog&#10;tb_log" style="rounded=1;whiteSpace=wrap;html=0;align=center;verticalAlign=middle;fillColor=#F6F8FB;strokeColor=#48637C;fontColor=#12253A;fontSize=14;fontFamily=Arial;spacing=12;arcSize=8;" vertex="1" parent="1">
+          <mxGeometry x="620" y="1015" width="240" height="123" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=0;endArrow=open;endFill=0;strokeColor=#53728D;strokeWidth=1.5;" edge="1" parent="1" source="ExpressApp" target="AuditMiddleware">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=0;endArrow=open;endFill=0;strokeColor=#53728D;strokeWidth=1.5;" edge="1" parent="1" source="AuditMiddleware" target="AuditService">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=0;endArrow=open;endFill=0;strokeColor=#53728D;strokeWidth=1.5;" edge="1" parent="1" source="AuditService" target="WinstonLogger">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=0;endArrow=open;endFill=0;strokeColor=#53728D;strokeWidth=1.5;" edge="1" parent="1" source="AuditService" target="MySQLPool">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=0;endArrow=open;endFill=0;strokeColor=#53728D;strokeWidth=1.5;" edge="1" parent="1" source="WinstonLogger" target="LogArquivoOuStdout">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_6" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=0;endArrow=open;endFill=0;strokeColor=#53728D;strokeWidth=1.5;" edge="1" parent="1" source="MySQLPool" target="TabelaLog">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

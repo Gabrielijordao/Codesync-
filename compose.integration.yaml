@@ -1,0 +1,23 @@
+# Banco isolado para npm run test:db; NAO usa o volume de desenvolvimento.
+services:
+  db_integration:
+    image: mysql:8.0
+    restart: "no"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${TEST_MYSQL_ROOT_PASSWORD:?Defina TEST_MYSQL_ROOT_PASSWORD no .env}
+      MYSQL_DATABASE: hospedja
+      MYSQL_USER: hospedja_teste
+      MYSQL_PASSWORD: ${TEST_DB_PASSWORD:?Defina TEST_DB_PASSWORD no .env}
+    ports:
+      - "127.0.0.1:3308:3306"
+    volumes:
+      - mysql_integration_data:/var/lib/mysql
+      - ./database/01_schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u root -p"$$MYSQL_ROOT_PASSWORD" --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+volumes:
+  mysql_integration_data:

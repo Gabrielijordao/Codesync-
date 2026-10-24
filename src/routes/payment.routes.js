@@ -1,0 +1,12 @@
+'use strict';
+const r = require('express').Router();
+const {z} = require('zod');
+const s = require('../validators/schemas');
+const validate = require('../middlewares/validate');
+const {requireAuth,allowRoles} = require('../middlewares/auth');
+const c = require('../controllers/payment.controller');
+r.use(requireAuth);
+r.get('/',c.list);
+r.get('/:id',validate(z.object({id:s.bigintId}),'params'),c.get);
+r.post('/',allowRoles('ADMIN'),validate(s.pagamentoCreate),c.create);
+module.exports=r;

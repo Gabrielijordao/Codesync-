@@ -1,0 +1,28 @@
+digraph D {
+graph [rankdir=TB,bgcolor=white,ranksep="0.9",nodesep="0.45",pad="0.25",splines=polyline];
+node [shape=box,style="rounded,filled",fillcolor="#F6F8FB",color="#48637C",fontcolor="#12253A",fontname="DejaVu Sans",fontsize=11,margin="0.15,0.15"];
+edge [color="#53728D",arrowsize=0.7];
+{rank=same; "ClienteHTTP";}
+"ClienteHTTP" [label="ClienteHTTP\nJSON / HTTP"];
+{rank=same; "ExpressAPI";}
+"ExpressAPI" [label="ExpressAPI\nNode.js\nExpress.js"];
+{rank=same; "AuthService"; "CatalogService"; "ReservationService"; "AuditService";}
+"AuthService" [label="AuthService\nJWT / bcrypt"];
+"CatalogService" [label="CatalogService\nhoteis / quartos / guias"];
+"ReservationService" [label="ReservationService\nrascunhos"];
+"AuditService" [label="AuditService\nauditoria"];
+{rank=same; "Repositories";}
+"Repositories" [label="Repositories\nmysql2\nSQL parametrizado"];
+{rank=same; "MySQL8";}
+"MySQL8" [label="MySQL8\npersistencia"];
+"ClienteHTTP" -> "ExpressAPI";
+"ExpressAPI" -> "AuthService";
+"ExpressAPI" -> "CatalogService";
+"ExpressAPI" -> "ReservationService";
+"ExpressAPI" -> "AuditService";
+"AuthService" -> "Repositories";
+"CatalogService" -> "Repositories";
+"ReservationService" -> "Repositories";
+"AuditService" -> "Repositories";
+"Repositories" -> "MySQL8";
+}

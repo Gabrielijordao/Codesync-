@@ -1,0 +1,25 @@
+digraph D {
+graph [rankdir=TB,bgcolor=white,ranksep="0.9",nodesep="0.45",pad="0.25",splines=polyline];
+node [shape=box,style="rounded,filled",fillcolor="#F6F8FB",color="#48637C",fontcolor="#12253A",fontname="DejaVu Sans",fontsize=11,margin="0.15,0.15"];
+edge [color="#53728D",arrowsize=0.7];
+{rank=same; "AuthRoutes";}
+"AuthRoutes" [label="AuthRoutes\nPOST /register\nPOST /login\nPATCH /password"];
+{rank=same; "AuthController"; "AuthMiddleware";}
+"AuthController" [label="AuthController\n+ register()\n+ login()"];
+"AuthMiddleware" [label="AuthMiddleware\n+ requireAuth()\n+ allowRoles()"];
+{rank=same; "AuthService"; "SecurityUtils";}
+"AuthService" [label="AuthService\n+ authenticate()\n+ changePassword()"];
+"SecurityUtils" [label="SecurityUtils\n+ hashPassword()\n+ signToken()\n+ verifyToken()"];
+{rank=same; "UserRepository";}
+"UserRepository" [label="UserRepository\n+ byEmail()\n+ byId()\n+ create()"];
+{rank=same; "MySQL8";}
+"MySQL8" [label="MySQL8\ntb_usuario"];
+"AuthRoutes" -> "AuthController";
+"AuthRoutes" -> "AuthMiddleware";
+"AuthController" -> "AuthService";
+"AuthMiddleware" -> "SecurityUtils";
+"AuthMiddleware" -> "UserRepository";
+"AuthService" -> "SecurityUtils";
+"AuthService" -> "UserRepository";
+"UserRepository" -> "MySQL8";
+}

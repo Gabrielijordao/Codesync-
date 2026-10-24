@@ -1,0 +1,63 @@
+@base = http://localhost:3000
+@token = COLE_SEU_JWT_AQUI
+
+### 1. Health check
+GET {{base}}/health
+
+### 2. Login como cliente de desenvolvimento
+POST {{base}}/api/v1/auth/login
+Content-Type: application/json
+
+{"email":"cliente@hospedja.example","senha":"Cliente#CP3_2026!"}
+
+### 3. Cadastro de cliente (somente em desenvolvimento)
+POST {{base}}/api/v1/auth/register
+Content-Type: application/json
+
+{"nome":"Cliente HTTP Demo","email":"cliente-http-demo@example.com","senha":"Exemplo#Seguro2026"}
+
+### 4. Perfil protegido
+GET {{base}}/api/v1/usuarios/me
+Authorization: Bearer {{token}}
+
+### 5. Lista de hospedagens
+GET {{base}}/api/v1/hoteis
+
+### 6. Tipos de quarto de hoteis ativos
+GET {{base}}/api/v1/quartos
+
+### 7. Guias aprovados
+GET {{base}}/api/v1/guias
+
+### 8. Rascunho de reserva (nao confirma disponibilidade)
+POST {{base}}/api/v1/reservas
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"checkin":"2027-06-15","checkout":"2027-06-17","quantidade_hospedes":2,"observacoes":"Rascunho academico"}
+
+### 9. Minhas reservas
+GET {{base}}/api/v1/reservas
+Authorization: Bearer {{token}}
+
+### 10. Registrar ocorrencia, sem punicao automatica
+POST {{base}}/api/v1/ocorrencias
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"tipo_alvo":"HOTEL","id_alvo":"1","tipo_ocorrencia":"RECLAMACAO","descricao":"Registro de exemplo, sem penalidade automatica"}
+
+
+### 11. Cadastro de gestor (necessario token ADMIN)
+POST {{base}}/api/v1/usuarios
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"nome":"Gestor Novo","email":"gestor-http-demo@example.com","senha":"GestorSeguro#2026","tipo_usuario":"GESTOR_HOSPEDAGEM"}
+
+### 12. Vincular gestor ao hotel 1 (necessario token ADMIN)
+POST {{base}}/api/v1/hoteis/1/gestores
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{"id_usuario":"3"}

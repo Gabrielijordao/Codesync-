@@ -1,0 +1,22 @@
+digraph D {
+graph [rankdir=TB,bgcolor=white,ranksep="0.9",nodesep="0.45",pad="0.25",splines=polyline];
+node [shape=box,style="rounded,filled",fillcolor="#F6F8FB",color="#48637C",fontcolor="#12253A",fontname="DejaVu Sans",fontsize=11,margin="0.15,0.15"];
+edge [color="#53728D",arrowsize=0.7];
+{rank=same; "OccurrenceRoutes";}
+"OccurrenceRoutes" [label="OccurrenceRoutes\nGET /\nPOST /\nPATCH /:id/analise"];
+{rank=same; "OccurrenceController";}
+"OccurrenceController" [label="OccurrenceController\n+ create()\n+ review()"];
+{rank=same; "OccurrenceService";}
+"OccurrenceService" [label="OccurrenceService\n+ create()\n+ review()"];
+{rank=same; "SqlRepository"; "MySQLPool";}
+"SqlRepository" [label="SqlRepository\n+ findById()\n+ create()"];
+"MySQLPool" [label="MySQLPool\n+ execute()"];
+{rank=same; "MySQL8";}
+"MySQL8" [label="MySQL8\ntb_ocorrencia\ntb_penalidade"];
+"OccurrenceRoutes" -> "OccurrenceController";
+"OccurrenceController" -> "OccurrenceService";
+"OccurrenceService" -> "SqlRepository";
+"OccurrenceService" -> "MySQLPool";
+"SqlRepository" -> "MySQL8";
+"MySQLPool" -> "MySQL8";
+}

@@ -1,0 +1,1720 @@
+openapi: 3.0.3
+info:
+  title: HospedJá — API REST (Checkpoint 3)
+  version: 0.3.0
+  description: Equipe CodeSync • Grupo 3 • Universidade de Uberaba. **API acadêmica, não pronta para transações
+    reais.** Reservas são rascunhos PENDENTE, pagamentos são registros internos preliminares. Sem integração
+    de cobrança/estorno. Ocorrências exigem análise humana e nunca aplicam punição automaticamente.
+servers:
+- url: /
+  description: Mesmo host do Swagger; use /api/v1 no caminho
+- url: http://localhost:3000
+  description: Docker ou Node local
+tags:
+- name: Saúde
+- name: Autenticação
+- name: Usuários
+- name: Hospedagens
+- name: Quartos
+- name: Guias
+- name: Reservas
+- name: Pagamentos
+- name: Ocorrências
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Token retornado por POST /api/v1/auth/login
+  schemas:
+    Erro:
+      type: object
+      additionalProperties: false
+      properties:
+        error:
+          type: object
+          additionalProperties: false
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+          required:
+          - code
+          - message
+      required:
+      - error
+    Usuario:
+      type: object
+      additionalProperties: false
+      properties:
+        id_usuario: &id006
+          type: string
+          pattern: ^[1-9][0-9]*$
+          example: '1'
+        nome:
+          type: string
+        email:
+          type: string
+          format: email
+        telefone:
+          type: string
+          nullable: true
+        tipo_usuario:
+          type: string
+          enum:
+          - CLIENTE
+          - ADMIN
+          - GUIA
+          - GESTOR_HOSPEDAGEM
+          - OPERADOR_SAC
+        status:
+          type: string
+      required:
+      - id_usuario
+      - nome
+      - email
+      - tipo_usuario
+      - status
+      description: Nunca inclui senha_hash
+    Cadastro:
+      type: object
+      additionalProperties: false
+      properties:
+        nome: &id001
+          type: string
+          minLength: 1
+          maxLength: 120
+        email: &id002
+          type: string
+          format: email
+        senha: &id003
+          type: string
+          minLength: 10
+          maxLength: 72
+          format: password
+        telefone: &id004
+          type: string
+          nullable: true
+        data_nascimento: &id005
+          type: string
+          format: date
+          nullable: true
+      required:
+      - nome
+      - email
+      - senha
+    CadastroEquipe:
+      type: object
+      additionalProperties: false
+      properties:
+        nome: *id001
+        email: *id002
+        senha: *id003
+        telefone: *id004
+        data_nascimento: *id005
+        tipo_usuario:
+          type: string
+          enum:
+          - GUIA
+          - GESTOR_HOSPEDAGEM
+          - OPERADOR_SAC
+      required:
+      - nome
+      - email
+      - senha
+      - tipo_usuario
+    Login:
+      type: object
+      additionalProperties: false
+      properties:
+        email:
+          type: string
+          format: email
+        senha:
+          type: string
+          format: password
+      required:
+      - email
+      - senha
+    AlterarSenha:
+      type: object
+      additionalProperties: false
+      properties:
+        atual:
+          type: string
+          format: password
+        nova:
+          type: string
+          minLength: 10
+          maxLength: 72
+          format: password
+      required:
+      - atual
+      - nova
+    AtualizarPerfil:
+      type: object
+      additionalProperties: false
+      properties:
+        nome:
+          type: string
+        telefone:
+          type: string
+          nullable: true
+        data_nascimento:
+          type: string
+          format: date
+          nullable: true
+    HotelCriar:
+      type: object
+      additionalProperties: false
+      properties:
+        id_rede: *id006
+        nome: &id007
+          type: string
+          maxLength: 150
+        descricao: &id008
+          type: string
+          nullable: true
+        comodidades: &id009
+          type: array
+          items:
+            type: string
+          nullable: true
+        categoria: &id010
+          type: string
+          enum:
+          - HOTEL
+          - POUSADA
+          - RESORT
+          - APART_HOTEL
+          - HOSTEL
+          - OUTRO
+        classificacao: &id011
+          type: integer
+          minimum: 1
+          maximum: 5
+        telefone: &id012
+          type: string
+          nullable: true
+        email: &id013
+          type: string
+          format: email
+          nullable: true
+        checkin_inicio: &id014
+          type: string
+          example: '14:00'
+        checkout_fim: &id015
+          type: string
+          example: '12:00'
+      required:
+      - nome
+    QuartoCriar:
+      type: object
+      additionalProperties: false
+      properties:
+        id_hotel: *id006
+        nome: &id016
+          type: string
+        tipo: &id017
+          type: string
+        descricao: &id018
+          type: string
+          nullable: true
+        capacidade: &id019
+          type: integer
+          minimum: 1
+        quantidade_camas: &id020
+          type: integer
+          minimum: 1
+          nullable: true
+        tamanho_m2: &id021
+          type: number
+          minimum: 0
+          nullable: true
+        valor_diaria: &id022
+          type: number
+          minimum: 0
+        quantidade_disponivel: &id023
+          type: integer
+          minimum: 0
+        status: &id024
+          type: string
+          enum:
+          - DISPONIVEL
+          - INDISPONIVEL
+          - MANUTENCAO
+      required:
+      - id_hotel
+      - nome
+      - tipo
+      - capacidade
+      - valor_diaria
+    GuiaCriar:
+      type: object
+      additionalProperties: false
+      properties:
+        id_usuario: *id006
+        id_hotel: *id006
+        nome: &id025
+          type: string
+        documento_identidade: &id026
+          type: string
+          nullable: true
+        email: &id027
+          type: string
+          format: email
+          nullable: true
+        telefone: &id028
+          type: string
+          nullable: true
+        tipo_guia:
+          type: string
+          enum:
+          - INTERNO
+          - EXTERNO
+        descricao: &id029
+          type: string
+          nullable: true
+        especialidade: &id030
+          type: string
+          nullable: true
+        area_atuacao: &id031
+          type: string
+          nullable: true
+        servicos_oferecidos: &id032
+          type: string
+          nullable: true
+        valor_diaria: &id033
+          type: number
+          minimum: 0
+          nullable: true
+        status_aprovacao: &id034
+          type: string
+          enum:
+          - PENDENTE
+          - APROVADO
+          - REPROVADO
+        status: &id035
+          type: string
+          enum:
+          - ATIVO
+          - INATIVO
+          - BLOQUEADO
+      required:
+      - nome
+      - tipo_guia
+    ReservaCriar:
+      type: object
+      additionalProperties: false
+      properties:
+        checkin:
+          type: string
+          format: date
+        checkout:
+          type: string
+          format: date
+        quantidade_hospedes:
+          type: integer
+          minimum: 1
+        observacoes:
+          type: string
+          nullable: true
+      required:
+      - checkin
+      - checkout
+      - quantidade_hospedes
+      description: Somente rascunho PENDENTE; não cota, bloqueia disponibilidade nem cobra
+    PagamentoCriar:
+      type: object
+      additionalProperties: false
+      properties:
+        id_reserva: *id006
+        valor:
+          type: number
+          minimum: 0
+        metodo:
+          type: string
+          enum:
+          - CARTAO_CREDITO
+          - CARTAO_DEBITO
+          - PIX
+          - BOLETO
+          nullable: true
+      required:
+      - id_reserva
+      - valor
+      description: Uso administrativo; não processa cobrança externa
+    OcorrenciaCriar:
+      type: object
+      additionalProperties: false
+      properties:
+        tipo_alvo:
+          type: string
+          enum:
+          - CLIENTE
+          - HOTEL
+          - GUIA
+        id_alvo: *id006
+        tipo_ocorrencia:
+          type: string
+        descricao:
+          type: string
+        id_reserva: *id006
+        id_reserva_guia: *id006
+      required:
+      - tipo_alvo
+      - id_alvo
+      - tipo_ocorrencia
+      - descricao
+    AnaliseOcorrencia:
+      type: object
+      additionalProperties: false
+      properties:
+        status:
+          type: string
+          enum:
+          - EM_ANALISE
+          - PROCEDENTE
+          - IMPROCEDENTE
+          - ENCERRADA
+        analise:
+          type: string
+      required:
+      - status
+      - analise
+      description: Admin humano analisa; sem punição automática
+    AlterarStatusUsuario:
+      type: object
+      additionalProperties: false
+      properties:
+        status:
+          type: string
+          enum:
+          - ATIVO
+          - INATIVO
+          - BLOQUEADO
+      required:
+      - status
+    VincularGestor:
+      type: object
+      additionalProperties: false
+      properties:
+        id_usuario: *id006
+      required:
+      - id_usuario
+    ReservaEditar:
+      type: object
+      additionalProperties: false
+      properties:
+        observacoes:
+          type: string
+          nullable: true
+    HotelPatch:
+      type: object
+      additionalProperties: false
+      properties:
+        id_rede: *id006
+        nome: *id007
+        descricao: *id008
+        comodidades: *id009
+        categoria: *id010
+        classificacao: *id011
+        telefone: *id012
+        email: *id013
+        checkin_inicio: *id014
+        checkout_fim: *id015
+        status:
+          type: string
+          enum:
+          - ATIVO
+          - INATIVO
+    QuartoPatch:
+      type: object
+      additionalProperties: false
+      properties:
+        nome: *id016
+        tipo: *id017
+        descricao: *id018
+        capacidade: *id019
+        quantidade_camas: *id020
+        tamanho_m2: *id021
+        valor_diaria: *id022
+        quantidade_disponivel: *id023
+        status: *id024
+    GuiaPatch:
+      type: object
+      additionalProperties: false
+      properties:
+        nome: *id025
+        documento_identidade: *id026
+        email: *id027
+        telefone: *id028
+        descricao: *id029
+        especialidade: *id030
+        area_atuacao: *id031
+        servicos_oferecidos: *id032
+        valor_diaria: *id033
+        status_aprovacao: *id034
+        status: *id035
+  responses:
+    Erro:
+      description: Erro validado, negado ou inesperado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Erro'
+paths:
+  /health:
+    get:
+      tags:
+      - Saúde
+      summary: Health check da API e SELECT 1 no banco
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+  /openapi.json:
+    get:
+      tags:
+      - Saúde
+      summary: Especificação OpenAPI
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+  /api/v1/auth/register:
+    post:
+      tags:
+      - Autenticação
+      summary: Cadastro público de cliente com bcrypt
+      responses:
+        '201':
+          description: Criado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cadastro'
+  /api/v1/auth/login:
+    post:
+      tags:
+      - Autenticação
+      summary: Login e emissão de JWT
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+  /api/v1/auth/password:
+    patch:
+      tags:
+      - Autenticação
+      summary: Altera senha autenticada
+      responses:
+        '204':
+          description: Senha alterada
+        '401':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlterarSenha'
+  /api/v1/usuarios/me:
+    get:
+      tags:
+      - Usuários
+      summary: Perfil autenticado
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      security:
+      - bearerAuth: []
+    patch:
+      tags:
+      - Usuários
+      summary: Atualiza perfil próprio
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AtualizarPerfil'
+  /api/v1/usuarios:
+    get:
+      tags:
+      - Usuários
+      summary: Lista usuários [ADMIN]
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      security:
+      - bearerAuth: []
+      description: Acesso exclusivamente administrativo
+    post:
+      tags:
+      - Usuários
+      summary: Cria membro da equipe [ADMIN]
+      responses:
+        '201':
+          description: Criado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CadastroEquipe'
+  /api/v1/usuarios/{id}:
+    get:
+      tags:
+      - Usuários
+      summary: Consulta usuário [ADMIN]
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema: *id006
+  /api/v1/usuarios/{id}/status:
+    patch:
+      tags:
+      - Usuários
+      summary: Altera status de usuário [ADMIN]
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlterarStatusUsuario'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema: *id006
+  /api/v1/hoteis:
+    get:
+      tags:
+      - Hospedagens
+      summary: Lista pública de registros ativos
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      description: Aceita JWT opcional para visualização administrativa
+    post:
+      tags:
+      - Hospedagens
+      summary: Cria registro [controle de acesso]
+      responses:
+        '201':
+          description: Criado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HotelCriar'
+  /api/v1/hoteis/{id}:
+    get:
+      tags:
+      - Hospedagens
+      summary: Consulta registro
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema: *id006
+      description: Aceita JWT opcional para visualização de registros próprios/inativos
+    patch:
+      tags:
+      - Hospedagens
+      summary: Atualiza campos permitidos [controle de acesso]
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HotelPatch'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema: *id006
+      description: O schema da API permite campos parciais em PATCH. Confira schemas.js.
+    delete:
+      tags:
+      - Hospedagens
+      summary: Desativa logicamente registro [controle de acesso]
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema: *id006
+  /api/v1/quartos:
+    get:
+      tags:
+      - Quartos
+      summary: Lista pública de registros ativos
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      description: Aceita JWT opcional para visualização administrativa
+    post:
+      tags:
+      - Quartos
+      summary: Cria registro [controle de acesso]
+      responses:
+        '201':
+          description: Criado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuartoCriar'
+  /api/v1/quartos/{id}:
+    get:
+      tags:
+      - Quartos
+      summary: Consulta registro
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema: *id006
+      description: Aceita JWT opcional para visualização de registros próprios/inativos
+    patch:
+      tags:
+      - Quartos
+      summary: Atualiza campos permitidos [controle de acesso]
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuartoPatch'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema: *id006
+      description: O schema da API permite campos parciais em PATCH. Confira schemas.js.
+    delete:
+      tags:
+      - Quartos
+      summary: Desativa logicamente registro [controle de acesso]
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema: *id006
+  /api/v1/guias:
+    get:
+      tags:
+      - Guias
+      summary: Lista pública de registros ativos
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      description: Aceita JWT opcional para visualização administrativa
+    post:
+      tags:
+      - Guias
+      summary: Cria registro [controle de acesso]
+      responses:
+        '201':
+          description: Criado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GuiaCriar'
+  /api/v1/guias/{id}:
+    get:
+      tags:
+      - Guias
+      summary: Consulta registro
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema: *id006
+      description: Aceita JWT opcional para visualização de registros próprios/inativos
+    patch:
+      tags:
+      - Guias
+      summary: Atualiza campos permitidos [controle de acesso]
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GuiaPatch'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema: *id006
+      description: O schema da API permite campos parciais em PATCH. Confira schemas.js.
+    delete:
+      tags:
+      - Guias
+      summary: Desativa logicamente registro [controle de acesso]
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema: *id006
+  /api/v1/hoteis/{id}/gestores:
+    post:
+      tags:
+      - Hospedagens
+      summary: Vincula gestor [ADMIN]
+      responses:
+        '201':
+          description: Criado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VincularGestor'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema: *id006
+  /api/v1/hoteis/{id}/gestores/{usuarioId}:
+    delete:
+      tags:
+      - Hospedagens
+      summary: Desvincula gestor [ADMIN]
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema: *id006
+      - name: usuarioId
+        in: path
+        required: true
+        schema: *id006
+  /api/v1/reservas:
+    get:
+      tags:
+      - Reservas
+      summary: Lista reservas autorizadas
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - Reservas
+      summary: Cria reserva PENDENTE preliminar
+      responses:
+        '201':
+          description: Criado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReservaCriar'
+      description: Sem precificação, sem estoque e sem pagamento efetivo.
+  /api/v1/reservas/{id}:
+    get:
+      tags:
+      - Reservas
+      summary: Consulta reserva autorizada
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema: *id006
+    patch:
+      tags:
+      - Reservas
+      summary: Edita observações somente em PENDENTE
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReservaEditar'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema: *id006
+    delete:
+      tags:
+      - Reservas
+      summary: Cancela somente rascunho sem pagamento
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema: *id006
+      description: Não cancela confirmação, não estorna pagamentos.
+  /api/v1/pagamentos:
+    get:
+      tags:
+      - Pagamentos
+      summary: Lista pagamentos autorizados
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - Pagamentos
+      summary: Registra pagamento PENDENTE preliminar [ADMIN]
+      responses:
+        '201':
+          description: Criado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PagamentoCriar'
+      description: Não executa operações com Mercado Pago.
+  /api/v1/pagamentos/{id}:
+    get:
+      tags:
+      - Pagamentos
+      summary: Consulta pagamento autorizado
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema: *id006
+  /api/v1/ocorrencias:
+    get:
+      tags:
+      - Ocorrências
+      summary: Lista ocorrências autorizadas
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - Ocorrências
+      summary: Registra ocorrência para análise humana
+      responses:
+        '201':
+          description: Criado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OcorrenciaCriar'
+  /api/v1/ocorrencias/{id}:
+    get:
+      tags:
+      - Ocorrências
+      summary: Consulta ocorrência
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema: *id006
+  /api/v1/ocorrencias/{id}/analise:
+    patch:
+      tags:
+      - Ocorrências
+      summary: Analisa ocorrência [ADMIN humano]
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    description: Resultado do endpoint
+        '401':
+          $ref: '#/components/responses/Erro'
+        '403':
+          $ref: '#/components/responses/Erro'
+        '404':
+          $ref: '#/components/responses/Erro'
+        '409':
+          $ref: '#/components/responses/Erro'
+        '422':
+          $ref: '#/components/responses/Erro'
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnaliseOcorrencia'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema: *id006
+      description: Não gera punição automaticamente.
